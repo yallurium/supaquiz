@@ -7,8 +7,9 @@ class TriviaRepository {
   static const _authority = 'the-trivia-api.com';
 
   // TODO Pass parameters.
-  Future<List<TriviaQuestion>> getQuestions() async {
-    final url = Uri.https(_authority, 'api/questions');
+  Future<List<TriviaQuestion>> getQuestions(int numOfQuestions) async {
+    final url = Uri.https(
+        _authority, 'api/questions', {'limit': numOfQuestions.toString()});
     final response = await http.get(url);
     final questions = jsonDecode(utf8.decode(response.bodyBytes)) as List;
     return questions

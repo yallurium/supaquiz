@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/repositories/trivia_repository.dart';
-import 'package:supaquiz/views/game/game.dart';
-import 'package:supaquiz/widgets/option_button.dart';
+import 'package:supaquiz/views/solo_game/solo_game_settings.dart';
+import 'package:supaquiz/widgets/app_button.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -11,34 +11,19 @@ class HomeView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: OptionButton(
-                onPressed: () async {
-                  final questions = await TriviaRepository().getQuestions();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => GameView(questions: questions),
-                    ),
-                  );
-                },
-                label: 'Play solo',
+        AppButton.expanded(
+          onPressed: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SoloGameSettings(),
               ),
-            ),
-          ],
+            );
+          },
+          label: 'Play solo',
         ),
-        Row(
-          children: [
-            Expanded(child: OptionButton(onPressed: () {}, label: 'New game')),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(child: OptionButton(onPressed: () {}, label: 'Join game')),
-          ],
-        ),
+        AppButton.expanded(onPressed: () {}, label: 'Host game'),
+        AppButton.expanded(onPressed: () {}, label: 'Join game'),
       ],
     );
   }

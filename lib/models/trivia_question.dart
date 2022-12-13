@@ -8,16 +8,16 @@ class TriviaQuestion {
   final String correctAnswer;
   final List<String> incorrectAnswers;
   final String question;
+  final List<String> answers;
 
   TriviaQuestion(
-      this.category, this.correctAnswer, this.incorrectAnswers, this.question);
+      this.category, this.correctAnswer, this.incorrectAnswers, this.question)
+      : answers = List.of(incorrectAnswers)
+          ..add(correctAnswer)
+          ..shuffle();
 
   factory TriviaQuestion.fromJson(Map<String, dynamic> json) =>
       _$TriviaQuestionFromJson(json);
 
   Map<String, dynamic> toJson() => _$TriviaQuestionToJson(this);
-
-  List<String> get answers => List.of(incorrectAnswers)
-    ..add(correctAnswer)
-    ..shuffle();
 }

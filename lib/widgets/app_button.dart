@@ -1,18 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/theme.dart';
 
-class OptionButton extends StatelessWidget {
+class AppButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPressed;
+  final Color? backgroundColor;
+  final VoidCallback? onPressed;
+  final bool expanded;
 
-  const OptionButton({
+  const AppButton.expanded({
     Key? key,
     required this.label,
     required this.onPressed,
-  }) : super(key: key);
+    this.backgroundColor,
+  })  : expanded = true,
+        super(key: key);
+
+  const AppButton({
+    Key? key,
+    required this.label,
+    required this.onPressed,
+    this.backgroundColor,
+  })  : expanded = false,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (expanded) {
+      return Row(
+        children: [
+          Expanded(
+            child: _button(context),
+          )
+        ],
+      );
+    }
+    return _button(context);
+  }
+
+  Widget _button(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -27,6 +52,7 @@ class OptionButton extends StatelessWidget {
               color: supabaseGreen,
               width: 2,
             ),
+            backgroundColor: backgroundColor,
           ),
           child: Padding(
             padding:

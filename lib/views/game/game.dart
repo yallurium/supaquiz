@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/trivia_question.dart';
-import 'package:supaquiz/views/game/round.dart';
+import 'package:supaquiz/widgets/app_screen.dart';
 
 class GameView extends StatelessWidget {
   final List<TriviaQuestion> questions;
@@ -9,14 +9,8 @@ class GameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.8,
-          alignment: Alignment.center,
-          child: Round(question: questions.first),
-        ),
-      ),
+    return AppScreen(
+      child: const SizedBox(),
     );
   }
 }
