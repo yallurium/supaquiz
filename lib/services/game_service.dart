@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
 import 'package:supaquiz/models/solo_game.dart';
 import 'package:supaquiz/repositories/trivia_repository.dart';
+import 'package:supaquiz/services/player_name_generator.dart';
 
 class _Fields {
   static const id = 'id';
@@ -18,6 +19,7 @@ class GameService {
   final TriviaRepository _triviaRepository;
   final SupabaseClient _supabaseClient;
   final HashIds _hashIds;
+  var playerName = PlayerNameGenerator.generate;
 
   GameService(this._triviaRepository, this._supabaseClient)
       : _hashIds = HashIds(minHashLength: 4);
