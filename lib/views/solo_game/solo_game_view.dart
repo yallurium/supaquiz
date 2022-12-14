@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/solo_game.dart';
 import 'package:supaquiz/models/trivia_question.dart';
-import 'package:supaquiz/views/game/round.dart';
+import 'package:supaquiz/views/solo_game/answer_selection.dart';
 import 'package:supaquiz/views/solo_game/solo_game_score.dart';
-import 'package:supaquiz/widgets/app_screen.dart';
 
 class SoloGameView extends StatefulWidget {
   final SoloGame game;
@@ -21,7 +20,7 @@ class _SoloGameViewState extends State<SoloGameView> {
   @override
   Widget build(BuildContext context) {
     question = question ?? widget.game.nextQuestion!;
-    return Round(
+    return AnswerSelection(
       question: question!,
       selected: selectedAnswer,
       onAnswerSelected: (answer) async {

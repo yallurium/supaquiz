@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:supaquiz/models/multiplayer_game.dart';
 import 'package:supaquiz/services.dart';
-import 'package:supaquiz/models/solo_game.dart';
-import 'package:supaquiz/views/solo_game/solo_game_view.dart';
+import 'package:supaquiz/views/multiplayer_game/multiplayer_game_intro.dart';
 import 'package:supaquiz/widgets/app_button.dart';
 import 'package:supaquiz/widgets/app_input_field.dart';
 import 'package:supaquiz/widgets/app_screen.dart';
 import 'package:supaquiz/widgets/screen_loader.dart';
 import 'package:supaquiz/widgets/setting_heading.dart';
 
-class SoloGameSettings extends StatelessWidget {
+class MultiplayerGameSettings extends StatelessWidget {
   final numOfQuestionsController = TextEditingController(text: '5');
 
-  SoloGameSettings({Key? key}) : super(key: key);
+  MultiplayerGameSettings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +32,14 @@ class SoloGameSettings extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ScreenLoader<SoloGame>(
-                      future: Services.of(context)
-                          .gameService
-                          .newSoloGame(numOfQuestions),
-                      builder: (context, game) {
-                        return SoloGameView(game: game);
-                      }),
+                  builder: (_) => ScreenLoader<MultiplayerGame>(
+                    future: Services.of(context)
+                        .gameService
+                        .newMultiplayerGame(numOfQuestions),
+                    builder: (context, game) {
+                      return MultiplayerGameIntro(game: game);
+                    },
+                  ),
                 ),
               );
             },

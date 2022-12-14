@@ -1,32 +1,23 @@
-import 'package:flutter/widgets.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supaquiz/repositories/trivia_repository.dart';
+import 'package:supaquiz/secrets.dart';
+import 'package:supaquiz/services/auth_service.dart';
 import 'package:supaquiz/services/game_service.dart';
 
-class Dependencies extends InheritedWidget {
+class Dependencies {
+  final AuthService authService;
   final GameService gameService;
 
-  factory Dependencies.init({required Widget child}) {
-    return Dependencies._(
-      gameService: GameService(TriviaRepository()),
-      child: child,
+  Dependencies._(this.authService, this.gameService);
+
+  static Future<Dependencies> get init async {
+    final supabase = await Supabase.initialize(
+      url: supabaseUrl,
+      anonKey: supabaseAnonKey,
     );
-  }
-
-  const Dependencies._({
-    Key? key,
-    required this.gameService,
-    required Widget child,
-  }) : super(key: key, child: child);
-
-  static Dependencies of(BuildContext context) {
-    final Dependencies? result =
-        context.dependOnInheritedWidgetOfExactType<Dependencies>();
-    assert(result != null, 'No Dependencies found in context');
-    return result!;
-  }
-
-  @override
-  bool updateShouldNotify(Dependencies oldWidget) {
-    return false;
+    final authService = AuthService(supabase.client.auth);
+    await authService.logIn();
+    final gameService = GameService(TriviaRepository(), supabase.client);
+    return Dependencies._(authService, gameService);
   }
 }

@@ -3,14 +3,14 @@ import 'package:supaquiz/models/trivia_question.dart';
 import 'package:supaquiz/theme.dart';
 import 'package:supaquiz/widgets/app_button.dart';
 
-class Round extends StatelessWidget {
+class AnswerSelection extends StatelessWidget {
   static const red = Color(0xFFCE5152); // CE51
 
   final TriviaQuestion question;
   final Function(String) onAnswerSelected;
   final String? selected;
 
-  const Round({
+  const AnswerSelection({
     Key? key,
     required this.question,
     required this.onAnswerSelected,

@@ -12,7 +12,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
+  hashids2: ^2.0.0
   json_serializable: ^6.5.4
+  supabase_flutter: ^1.2.2
 
 dev_dependencies:
   flutter_test:
