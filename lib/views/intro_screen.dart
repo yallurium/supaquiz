@@ -26,9 +26,8 @@ class IntroScreen extends StatelessWidget {
               Expanded(
                 child: AppButton(
                   label: 'Play',
-                  onPressed: () {
-                    Services.of(context).gameService.playerName =
-                        _playerNameController.text;
+                  onPressed: () async {
+                    await Services.of(context).authService.signIn(_playerNameController.text);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

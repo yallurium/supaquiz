@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supaquiz/repositories/trivia_repository.dart';
 import 'package:supaquiz/secrets.dart';
@@ -15,8 +16,8 @@ class Dependencies {
       url: supabaseUrl,
       anonKey: supabaseAnonKey,
     );
-    final authService = AuthService(supabase.client.auth);
-    await authService.logIn();
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final authService = AuthService(supabase.client.auth, sharedPreferences);
     final gameService = GameService(TriviaRepository(), supabase.client);
     return Dependencies._(authService, gameService);
   }
