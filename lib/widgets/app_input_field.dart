@@ -4,7 +4,7 @@ import 'package:supaquiz/theme.dart';
 
 class AppInputField extends StatelessWidget {
   final TextEditingController controller;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final TextDirection? textDirection;
   final List<TextInputFormatter> inputFormatters;
 
@@ -26,7 +26,7 @@ class AppInputField extends StatelessWidget {
   const AppInputField({
     Key? key,
     required this.controller,
-    required this.keyboardType,
+    this.keyboardType,
     this.inputFormatters = const [],
     this.textDirection,
   }) : super(key: key);

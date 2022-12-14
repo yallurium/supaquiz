@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supaquiz/views/multiplayer_game/multiplayer_game_search.dart';
 import 'package:supaquiz/views/multiplayer_game/multiplayer_game_settings.dart';
 import 'package:supaquiz/views/solo_game/solo_game_settings.dart';
 import 'package:supaquiz/widgets/app_button.dart';
@@ -18,7 +19,17 @@ class TitleScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.headline4,
           ),
         ),
-        AppButton.expanded(onPressed: () {}, label: 'Join game'),
+        AppButton.expanded(
+          label: 'Join game',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MultiplayerGameSearch(),
+              ),
+            );
+          },
+        ),
         AppButton.expanded(
           label: 'Host game',
           onPressed: () async {
