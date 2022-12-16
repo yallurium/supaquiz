@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supaquiz/widgets/setting_heading.dart';
+import 'package:supaquiz/widgets/heading.dart';
 
+// TODO Calculate score.
 class MultiplayerGameScoreboard extends StatelessWidget {
   final int gameId;
 
@@ -12,7 +13,7 @@ class MultiplayerGameScoreboard extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SettingHeading(text: 'Results'),
+        Heading(text: 'Results'),
       ],
     );
   }

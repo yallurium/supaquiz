@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class SettingHeading extends StatelessWidget {
+class Heading extends StatelessWidget {
   final String text;
 
-  const SettingHeading({
+  const Heading({
     Key? key,
     required this.text,
   }) : super(key: key);

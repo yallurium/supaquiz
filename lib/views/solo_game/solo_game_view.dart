@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/solo_game.dart';
 import 'package:supaquiz/models/trivia_question.dart';
+import 'package:supaquiz/navigation.dart';
 import 'package:supaquiz/views/solo_game/solo_game_answer_selection.dart';
 import 'package:supaquiz/views/solo_game/solo_game_score.dart';
-import 'package:supaquiz/widgets/app_screen.dart';
 
 class SoloGameView extends StatefulWidget {
   final SoloGame game;
@@ -44,15 +44,11 @@ class _SoloGameViewState extends State<SoloGameView> {
           selectedAnswer = null;
         });
       } else {
-        Navigator.pushReplacement(
+        switchScreen(
           context,
-          MaterialPageRoute(
-            builder: (_) => AppScreen(
-              child: SoloGameScore(
-                correctAnswers: widget.game.correctAnswers,
-                totalQuestions: widget.game.totalQuestions,
-              ),
-            ),
+          SoloGameScore(
+            correctAnswers: widget.game.correctAnswers,
+            totalQuestions: widget.game.totalQuestions,
           ),
         );
       }

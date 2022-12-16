@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:supaquiz/navigation.dart';
 import 'package:supaquiz/services.dart';
 import 'package:supaquiz/views/multiplayer_game/multiplayer_game_host_intro.dart';
 import 'package:supaquiz/widgets/app_button.dart';
 import 'package:supaquiz/widgets/app_input_field.dart';
 import 'package:supaquiz/widgets/app_screen.dart';
-import 'package:supaquiz/widgets/setting_heading.dart';
+import 'package:supaquiz/widgets/heading.dart';
+import 'package:supaquiz/widgets/screen_loader.dart';
 
 class MultiplayerGameSettings extends StatelessWidget {
   final numOfQuestionsController = TextEditingController(text: '5');
@@ -17,7 +19,7 @@ class MultiplayerGameSettings extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SettingHeading(text: 'Number of questions'),
+          Heading(text: 'Number of questions'),
           AppInputField.number(
             controller: numOfQuestionsController,
           ),
@@ -27,18 +29,14 @@ class MultiplayerGameSettings extends StatelessWidget {
             onPressed: () async {
               final numOfQuestions =
                   int.tryParse(numOfQuestionsController.text) ?? 5;
-              // TODO make properly async
-              final game = await Services.of(context)
-                  .gameService
-                  .newMultiplayerGame(numOfQuestions);
-              Navigator.pushReplacement(
+              switchScreen(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return AppScreen(
-                      child: MultiplayerGameHostIntro(game: game),
-                    );
-                  },
+                ScreenLoader(
+                  future: Services.of(context)
+                      .gameService
+                      .newMultiplayerGame(numOfQuestions),
+                  builder: (context, game) =>
+                      MultiplayerGameHostIntro(game: game),
                 ),
               );
             },

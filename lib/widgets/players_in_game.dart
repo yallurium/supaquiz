@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/services.dart';
-import 'package:supaquiz/widgets/setting_heading.dart';
+import 'package:supaquiz/widgets/heading.dart';
 
 class PlayersInGame extends StatelessWidget {
   final int gameId;
@@ -17,7 +17,7 @@ class PlayersInGame extends StatelessWidget {
         return Column(
           children: [
             const SizedBox(height: 12.0),
-            SettingHeading(text: 'Players'),
+            Heading(text: 'Players'),
             const SizedBox(height: 12.0),
             ...players.map((playerName) => Text(
                   playerName,

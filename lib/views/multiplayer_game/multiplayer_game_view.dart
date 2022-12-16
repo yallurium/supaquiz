@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/game_question.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
+import 'package:supaquiz/navigation.dart';
 import 'package:supaquiz/services.dart';
 import 'package:supaquiz/views/multiplayer_game/multiplayer_game_answer_selection.dart';
 import 'package:supaquiz/views/multiplayer_game/multiplayer_game_scoreboard.dart';
-import 'package:supaquiz/widgets/app_screen.dart';
 
 class MultiplayerGameManager {
   final Iterator<GameQuestion> _iterator;
@@ -69,14 +69,8 @@ class _MultiplayerGameViewState extends State<MultiplayerGameView> {
           selectedAnswer = null;
         });
       } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => AppScreen(
-              child: MultiplayerGameScoreboard(gameId: widget.game.id),
-            ),
-          ),
-        );
+        switchScreen(
+            context, MultiplayerGameScoreboard(gameId: widget.game.id));
       }
     });
   }
