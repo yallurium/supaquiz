@@ -3,6 +3,7 @@ import 'package:supaquiz/models/multiplayer_game.dart';
 import 'package:supaquiz/widgets/app_screen.dart';
 import 'package:supaquiz/widgets/players_in_game.dart';
 
+// TODO Trigger game start.
 class MultiplayerGamePlayerIntro extends StatelessWidget {
   final MultiplayerGame game;
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
+import 'package:supaquiz/services.dart';
 import 'package:supaquiz/theme.dart';
+import 'package:supaquiz/views/multiplayer_game/multiplayer_game_view.dart';
 import 'package:supaquiz/widgets/app_button.dart';
+import 'package:supaquiz/widgets/app_screen.dart';
 import 'package:supaquiz/widgets/players_in_game.dart';
 
 class MultiplayerGameHostIntro extends StatelessWidget {
@@ -36,8 +39,21 @@ class MultiplayerGameHostIntro extends StatelessWidget {
         const SizedBox(height: 24.0),
         AppButton.expanded(
           label: 'Start game',
-          onPressed: () {
-            // TODO Start game
+          onPressed: () async {
+            // TODO Trigger game start for all players.
+            final questions =
+                await Services.of(context).gameService.getQuestions(game.id);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) {
+                  return AppScreen(
+                    child:
+                        MultiplayerGameView(game: game, questions: questions),
+                  );
+                },
+              ),
+            );
           },
         ),
       ],

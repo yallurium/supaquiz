@@ -23,7 +23,7 @@ class MultiplayerGameSettings extends StatelessWidget {
           ),
           const SizedBox(height: 8.0),
           AppButton.expanded(
-            label: 'Start game',
+            label: 'Create game',
             onPressed: () async {
               final numOfQuestions =
                   int.tryParse(numOfQuestionsController.text) ?? 5;

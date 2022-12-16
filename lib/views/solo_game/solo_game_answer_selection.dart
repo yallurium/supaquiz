@@ -3,14 +3,14 @@ import 'package:supaquiz/models/trivia_question.dart';
 import 'package:supaquiz/theme.dart';
 import 'package:supaquiz/widgets/app_button.dart';
 
-class AnswerSelection extends StatelessWidget {
-  static const red = Color(0xFFCE5152); // CE51
+class SoloGameAnswerSelection extends StatelessWidget {
+  static const red = Color(0xFFCE5152);
 
   final TriviaQuestion question;
   final Function(String) onAnswerSelected;
   final String? selected;
 
-  const AnswerSelection({
+  const SoloGameAnswerSelection({
     Key? key,
     required this.question,
     required this.onAnswerSelected,
@@ -29,7 +29,7 @@ class AnswerSelection extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
-        ...question.answers.map(
+        ...question.shuffledAnswers.map(
           (answer) {
             return Row(
               children: [

@@ -13,7 +13,6 @@ class PlayersInGame extends StatelessWidget {
       stream: Services.of(context).gameService.getCurrentPlayers(gameId),
       initialData: const [],
       builder: (context, snapshot) {
-        print(snapshot.connectionState);
         final players = snapshot.data ?? [];
         return Column(
           children: [

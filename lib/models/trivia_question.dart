@@ -8,11 +8,11 @@ class TriviaQuestion {
   final String correctAnswer;
   final List<String> incorrectAnswers;
   final String question;
-  final List<String> answers;
+  final List<String> shuffledAnswers;
 
   TriviaQuestion(
       this.category, this.correctAnswer, this.incorrectAnswers, this.question)
-      : answers = List.of(incorrectAnswers)
+      : shuffledAnswers = List.of(incorrectAnswers)
           ..add(correctAnswer)
           ..shuffle();
 

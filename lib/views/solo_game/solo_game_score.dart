@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/theme.dart';
 import 'package:supaquiz/widgets/app_button.dart';
-import 'package:supaquiz/widgets/app_screen.dart';
 
 class SoloGameScore extends StatelessWidget {
   final int correctAnswers;
@@ -15,48 +14,46 @@ class SoloGameScore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScreen(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'QUIZ COMPLETED',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline4,
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'QUIZ COMPLETED',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline4,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '$correctAnswers',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline1?.copyWith(
-                        color: supabaseGreen,
-                      ),
-                ),
-                Text(
-                  '/$totalQuestions',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-              ],
-            ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '$correctAnswers',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline1?.copyWith(
+                      color: supabaseGreen,
+                    ),
+              ),
+              Text(
+                '/$totalQuestions',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ],
           ),
-          const SizedBox(height: 24.0),
-          AppButton(
-            label: 'Back',
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 24.0),
+        AppButton(
+          label: 'Back',
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
     );
   }
 }
