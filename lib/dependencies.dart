@@ -18,7 +18,8 @@ class Dependencies {
     );
     final sharedPreferences = await SharedPreferences.getInstance();
     final authService = AuthService(supabase.client.auth, sharedPreferences);
-    final gameService = GameService(TriviaRepository(), supabase.client);
+    final gameService =
+        GameService(authService, TriviaRepository(), supabase.client);
     return Dependencies._(authService, gameService);
   }
 }

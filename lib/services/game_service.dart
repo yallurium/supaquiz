@@ -5,21 +5,28 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
 import 'package:supaquiz/models/solo_game.dart';
 import 'package:supaquiz/repositories/trivia_repository.dart';
+import 'package:supaquiz/services/auth_service.dart';
 
-class _Fields {
+class _GameFields {
   static const id = 'id';
   static const channel = 'channel';
   static const status = 'status';
 }
 
+class _PlayerFields {
+  static const playerName = 'player_name';
+}
+
 class GameService {
   static const _gamesTable = 'games';
+  static const _playerTable = 'players';
 
+  final AuthService _authService;
   final TriviaRepository _triviaRepository;
   final SupabaseClient _supabaseClient;
   final HashIds _hashIds;
 
-  GameService(this._triviaRepository, this._supabaseClient)
+  GameService(this._authService, this._triviaRepository, this._supabaseClient)
       : _hashIds = HashIds(minHashLength: 4);
 
   Future<SoloGame> newSoloGame(int numOfQuestions) async {
@@ -30,15 +37,16 @@ class GameService {
   Future<MultiplayerGame> newMultiplayerGame(int numOfQuestions) async {
     final game =
         await _supabaseClient.from(_gamesTable).insert({}).select().single();
-    final gameId = game[_Fields.id];
+    final gameId = game[_GameFields.id];
     final gameCode = _toGameCode(gameId);
-    final channel = game[_Fields.channel] as String;
+    final channel = game[_GameFields.channel] as String;
     final questions = await _triviaRepository.getQuestions(numOfQuestions);
     log('Created game with code $gameCode (ID $gameId) and channel $channel');
-    return MultiplayerGame(gameCode, channel, questions);
+    await _joinGame(gameId);
+    return MultiplayerGame(gameId, gameCode, channel, questions);
   }
 
-  Future<String> joinMultiplayerGame(String gameCode) async {
+  Future<MultiplayerGame> joinMultiplayerGame(String gameCode) async {
     final gameId = _toGameId(gameCode);
     log('Searching for game with code $gameCode (ID $gameId)');
     if (gameId == null) {
@@ -46,18 +54,40 @@ class GameService {
     }
     final game = await _supabaseClient
         .from(_gamesTable)
-        .select('${_Fields.status},${_Fields.channel}')
-        .eq(_Fields.id, gameId)
+        .select('${_GameFields.status},${_GameFields.channel}')
+        .eq(_GameFields.id, gameId)
         .maybeSingle();
     if (game == null) {
       throw InvalidGameCodeException('Invalid code');
     }
-    final status = game[_Fields.status];
+    final status = game[_GameFields.status];
     log('Found game with status $status');
     if (status != 'pending') {
       throw InvalidGameCodeException('Game has already started');
     }
-    return game['channel'];
+    await _joinGame(gameId);
+    return MultiplayerGame(gameId, gameCode, game['channel'], []);
+  }
+
+  Stream<List<String>> getCurrentPlayers(int gameId) {
+    return _supabaseClient
+        .from(_playerTable)
+        .stream(primaryKey: ['id'])
+        .eq('game_id', gameId)
+        .map((event) {
+          return event
+            .map((e) => e[_PlayerFields.playerName] as String)
+            .toList();
+        });
+  }
+
+  Future<void> _joinGame(int gameId) async {
+    final playerName = _authService.playerName;
+    log('Adding $playerName as player in game $gameId');
+    await _supabaseClient.from(_playerTable).upsert(
+      {'player_name': playerName, 'game_id': gameId},
+      onConflict: 'game_id,user_id',
+    );
   }
 
   String _toGameCode(int gameId) {

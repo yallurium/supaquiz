@@ -1,13 +1,15 @@
 import 'package:supaquiz/models/trivia_question.dart';
 
 class MultiplayerGame {
-  final String joinCode;
+  final int id;
+  final String code;
   final String channel;
 
   final Iterator<TriviaQuestion> _iterator;
   final int totalQuestions;
 
-  MultiplayerGame(this.joinCode, this.channel, List<TriviaQuestion> questions)
+  MultiplayerGame(
+      this.id, this.code, this.channel, List<TriviaQuestion> questions)
       : _iterator = questions.iterator,
         totalQuestions = questions.length;
 

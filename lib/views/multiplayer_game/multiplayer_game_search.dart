@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/services.dart';
 import 'package:supaquiz/services/game_service.dart';
-import 'package:supaquiz/views/multiplayer_game/multiplayer_game_guest_view.dart';
+import 'package:supaquiz/views/multiplayer_game/multiplayer_game_player_intro.dart';
 import 'package:supaquiz/widgets/app_button.dart';
 import 'package:supaquiz/widgets/app_input_field.dart';
 import 'package:supaquiz/widgets/app_screen.dart';
@@ -25,16 +25,14 @@ class MultiplayerGameSearch extends StatelessWidget {
             label: 'Join game',
             onPressed: () async {
               try {
-                final gameCode = _gameCodeController.text;
-                final gameChannel = await Services.of(context)
+                final game = await Services.of(context)
                     .gameService
-                    .joinMultiplayerGame(gameCode);
-                Navigator.push(
+                    .joinMultiplayerGame(_gameCodeController.text);
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (_) {
-                      return MultiplayerGameGuestView(
-                          code: gameCode, channel: gameChannel);
+                      return MultiplayerGamePlayerIntro(game: game);
                     },
                   ),
                 );

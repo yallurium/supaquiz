@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
 import 'package:supaquiz/theme.dart';
+import 'package:supaquiz/widgets/app_button.dart';
+import 'package:supaquiz/widgets/players_in_game.dart';
 
-class MultiplayerGameIntro extends StatelessWidget {
+class MultiplayerGameHostIntro extends StatelessWidget {
   final MultiplayerGame game;
 
-  const MultiplayerGameIntro({Key? key, required this.game}) : super(key: key);
+  const MultiplayerGameHostIntro({Key? key, required this.game})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +25,20 @@ class MultiplayerGameIntro extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            game.joinCode,
+            game.code,
             style: Theme.of(context)
                 .textTheme
                 .headline1
                 ?.copyWith(color: supabaseGreen),
           ),
+        ),
+        PlayersInGame(gameId: game.id),
+        const SizedBox(height: 24.0),
+        AppButton.expanded(
+          label: 'Start game',
+          onPressed: () {
+            // TODO Start game
+          },
         ),
       ],
     );
