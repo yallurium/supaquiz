@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:hashids2/hashids2.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supaquiz/models/game_question.dart';
+import 'package:supaquiz/models/game_status.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
 import 'package:supaquiz/models/solo_game.dart';
 import 'package:supaquiz/models/trivia_question.dart';
@@ -72,6 +73,20 @@ class GameService {
     }
     await _joinGame(gameId);
     return MultiplayerGame(gameId, gameCode, game['channel']);
+  }
+
+  Future updateGameStatus(int gameId, GameStatus status) async {
+    await _supabaseClient
+        .from('games')
+        .update({'status': status.name}).eq('id', gameId);
+  }
+
+  Stream<GameStatus> getGameStatus(int gameId) {
+    return _supabaseClient
+        .from('games')
+        .stream(primaryKey: ['id'])
+        .eq('id', gameId)
+        .map((e) => GameStatus.fromString(e.first['status']));
   }
 
   Future<List<GameQuestion>> getQuestions(int gameId) async {

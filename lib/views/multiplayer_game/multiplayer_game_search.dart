@@ -26,10 +26,15 @@ class MultiplayerGameSearch extends StatelessWidget {
             label: 'Join game',
             onPressed: () async {
               try {
-                final game = await Services.of(context)
-                    .gameService
+                final gameService = Services.of(context).gameService;
+                final game = await gameService
                     .joinMultiplayerGame(_gameCodeController.text);
-                switchScreen(context, MultiplayerGamePlayerIntro(game: game));
+                switchScreen(
+                    context,
+                    MultiplayerGamePlayerIntro(
+                      game: game,
+                      gameService: gameService,
+                    ));
               } on InvalidGameCodeException catch (ex) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

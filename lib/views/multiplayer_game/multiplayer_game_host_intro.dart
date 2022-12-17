@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:supaquiz/models/game_status.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
 import 'package:supaquiz/navigation.dart';
 import 'package:supaquiz/services.dart';
@@ -40,9 +43,10 @@ class MultiplayerGameHostIntro extends StatelessWidget {
         AppButton.expanded(
           label: 'Start game',
           onPressed: () async {
-            // TODO Trigger game start for all players.
-            final questions =
-                await Services.of(context).gameService.getQuestions(game.id);
+            final gameService = Services.of(context).gameService;
+            await gameService.updateGameStatus(game.id, GameStatus.started);
+            log('Game ${game.id} started');
+            final questions = await gameService.getQuestions(game.id);
             switchScreen(
                 context, MultiplayerGameView(game: game, questions: questions));
           },
