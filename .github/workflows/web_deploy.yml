@@ -21,7 +21,7 @@ jobs:
         env:
           SECRETS_FILE: ${{ secrets.SECRETS_FILE }}
       - run: flutter pub get
-      - run: flutter build web --release
+      - run: flutter build web --release --base-href /supaquiz/
       - run: |
           cd build
           mkdir web-deploy
