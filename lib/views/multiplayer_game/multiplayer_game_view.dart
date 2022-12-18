@@ -24,7 +24,6 @@ class MultiplayerGameManager {
   }
 }
 
-// TODO Implement time limit.
 class MultiplayerGameView extends StatefulWidget {
   final MultiplayerGame game;
   final MultiplayerGameManager manager;
@@ -49,8 +48,12 @@ class _MultiplayerGameViewState extends State<MultiplayerGameView> {
     question = question ?? widget.manager.nextQuestion!;
     return MultiplayerGameAnswerSelection(
       question: question!,
+      timeLimit: widget.game.timePerQuestion,
       selected: selectedAnswer,
       onAnswerSelected: (answer) async {
+        if (selectedAnswer != null) {
+          return;
+        }
         setState(() {
           selectedAnswer = answer;
         });
@@ -58,33 +61,36 @@ class _MultiplayerGameViewState extends State<MultiplayerGameView> {
         await Services.of(context)
             .gameService
             .answerQuestion(widget.game.id, question!.id, answer);
-        await Future.delayed(Duration(seconds: 1));
-        next();
       },
     );
   }
 
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 10)).then((value) => next());
+    super.initState();
+  }
+
   void next() {
-    setState(() {
-      final nextQuestion = widget.manager.nextQuestion;
-      if (nextQuestion != null) {
-        setState(() {
-          question = nextQuestion;
-          selectedAnswer = null;
-        });
-      } else {
-        switchScreen(
-          context,
-          ScreenLoader(
-            loadingText: 'Calculating...',
-            future: Services.of(context).gameService.getScores(widget.game.id),
-            builder: (context, scores) => MultiplayerGameScoreboard(
-              scores: scores,
-              userId: Services.of(context).authService.userId,
-            ),
+    final nextQuestion = widget.manager.nextQuestion;
+    if (nextQuestion != null) {
+      setState(() {
+        question = nextQuestion;
+        selectedAnswer = null;
+      });
+      Future.delayed(const Duration(seconds: 10)).then((value) => next());
+    } else {
+      switchScreen(
+        context,
+        ScreenLoader(
+          loadingText: 'Calculating...',
+          future: Services.of(context).gameService.getScores(widget.game.id),
+          builder: (context, scores) => MultiplayerGameScoreboard(
+            scores: scores,
+            userId: Services.of(context).authService.userId,
           ),
-        );
-      }
-    });
+        ),
+      );
+    }
   }
 }

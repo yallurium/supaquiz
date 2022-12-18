@@ -9,7 +9,6 @@ import 'package:supaquiz/services/game_service.dart';
 import 'package:supaquiz/views/multiplayer_game/multiplayer_game_view.dart';
 import 'package:supaquiz/widgets/players_in_game.dart';
 
-// TODO Trigger game start.
 class MultiplayerGamePlayerIntro extends StatefulWidget {
   final MultiplayerGame game;
   final GameService gameService;
