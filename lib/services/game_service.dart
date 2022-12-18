@@ -17,9 +17,8 @@ class GameService {
   final SupabaseClient _supabaseClient;
   final HashIds _hashIds;
 
-  // TODO Remove characters that look similar in current font, and replace when calculating.
   GameService(this._authService, this._triviaRepository, this._supabaseClient)
-      : _hashIds = HashIds(minHashLength: 4);
+      : _hashIds = _initHashIds;
 
   Future<SoloGame> newSoloGame(int numOfQuestions) async {
     final questions = await _triviaRepository.getQuestions(numOfQuestions);
@@ -147,8 +146,18 @@ class GameService {
   }
 
   int? _toGameId(String gameCode) {
-    final decoded = _hashIds.decode(gameCode);
+    final decoded =
+        _hashIds.decode(gameCode.replaceAll('O', '0').replaceAll('l', '1'));
     return decoded.isNotEmpty ? decoded.first : null;
+  }
+
+  /// Setup an instance of `HashIds`. Removes 'O' and 'l' from the alphabet
+  /// as they look too similar to 0 and 1 respectively.
+  static HashIds get _initHashIds {
+    return HashIds(
+      minHashLength: 4,
+      alphabet: HashIds.DEFAULT_ALPHABET.replaceAll(RegExp('[Ol]'), ''),
+    );
   }
 }
 
