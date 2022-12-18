@@ -6,7 +6,7 @@ import 'package:supaquiz/services/nickname_generator.dart';
 import 'package:uuid/uuid.dart';
 
 class AuthService {
-  static const _emailKey = 'email1';
+  static const _emailKey = 'email';
   static const _nicknameKey = 'nickname';
   static const _defaultPassword = '82eb32f2a3ef';
 

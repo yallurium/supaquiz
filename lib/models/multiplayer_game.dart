@@ -4,6 +4,5 @@ class MultiplayerGame {
   final String channel;
   final Duration timePerQuestion;
 
-  MultiplayerGame(this.id, this.code, this.channel)
-      : timePerQuestion = const Duration(seconds: 5);
+  MultiplayerGame(this.id, this.code, this.channel, this.timePerQuestion);
 }

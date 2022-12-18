@@ -25,9 +25,15 @@ class GameService {
     return SoloGame(questions);
   }
 
-  Future<MultiplayerGame> newMultiplayerGame(int numOfQuestions) async {
-    final game =
-        await _supabaseClient.from('games').insert({}).select().single();
+  Future<MultiplayerGame> newMultiplayerGame(
+      int numOfQuestions, int secondsPerQuestion) async {
+    final game = await _supabaseClient
+        .from('games')
+        .insert({
+          'seconds_per_question': secondsPerQuestion,
+        })
+        .select()
+        .single();
     final gameId = game['id'];
     final gameCode = _toGameCode(gameId);
     final channel = game['channel'] as String;
@@ -35,7 +41,8 @@ class GameService {
     await _insertGameQuestions(gameId, questions);
     log('Created game with code $gameCode (ID $gameId) and channel $channel');
     await _joinGame(gameId);
-    return MultiplayerGame(gameId, gameCode, channel);
+    return MultiplayerGame(
+        gameId, gameCode, channel, Duration(seconds: secondsPerQuestion));
   }
 
   Future<void> _insertGameQuestions(
@@ -61,7 +68,7 @@ class GameService {
     }
     final game = await _supabaseClient
         .from('games')
-        .select('status,channel')
+        .select('status,channel,seconds_per_question')
         .eq('id', gameId)
         .maybeSingle();
     if (game == null) {
@@ -73,7 +80,14 @@ class GameService {
       throw InvalidGameCodeException('Game has already started');
     }
     await _joinGame(gameId);
-    return MultiplayerGame(gameId, gameCode, game['channel']);
+    return MultiplayerGame(
+      gameId,
+      gameCode,
+      game['channel'],
+      Duration(
+        seconds: game['seconds_per_question'],
+      ),
+    );
   }
 
   Future updateGameStatus(int gameId, GameStatus status) async {

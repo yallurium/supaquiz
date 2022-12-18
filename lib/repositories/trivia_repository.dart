@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class TriviaRepository {
   static const _authority = 'the-trivia-api.com';
 
-  // TODO Pass parameters.
+  // TODO Select categories and difficulty.
   Future<List<TriviaQuestion>> getQuestions(int numOfQuestions) async {
     final url = Uri.https(
         _authority, 'api/questions', {'limit': numOfQuestions.toString()});

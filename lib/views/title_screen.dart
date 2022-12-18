@@ -42,7 +42,7 @@ class TitleScreen extends StatelessWidget {
           },
         ),
         AppButton.expanded(
-          label: 'Play solo',
+          label: 'Practice',
           onPressed: () async {
             Navigator.push(
               context,

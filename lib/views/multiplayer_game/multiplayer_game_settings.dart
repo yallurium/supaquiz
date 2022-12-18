@@ -10,6 +10,7 @@ import 'package:supaquiz/widgets/screen_loader.dart';
 
 class MultiplayerGameSettings extends StatelessWidget {
   final numOfQuestionsController = TextEditingController(text: '5');
+  final secondsPerQuestionController = TextEditingController(text: '5');
 
   MultiplayerGameSettings({Key? key}) : super(key: key);
 
@@ -24,17 +25,24 @@ class MultiplayerGameSettings extends StatelessWidget {
             controller: numOfQuestionsController,
           ),
           const SizedBox(height: 8.0),
+          Heading(text: 'Seconds to answer'),
+          AppInputField.number(
+            controller: secondsPerQuestionController,
+          ),
+          const SizedBox(height: 8.0),
           AppButton.expanded(
             label: 'Create game',
             onPressed: () async {
               final numOfQuestions =
                   int.tryParse(numOfQuestionsController.text) ?? 5;
+              final secondsToAnswer =
+                  int.tryParse(secondsPerQuestionController.text) ?? 5;
               switchScreen(
                 context,
                 ScreenLoader(
                   future: Services.of(context)
                       .gameService
-                      .newMultiplayerGame(numOfQuestions),
+                      .newMultiplayerGame(numOfQuestions, secondsToAnswer),
                   builder: (context, game) =>
                       MultiplayerGameHostIntro(game: game),
                 ),
