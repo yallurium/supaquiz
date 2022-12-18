@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/player_score.dart';
 import 'package:supaquiz/theme.dart';
-import 'package:supaquiz/views/multiplayer_game/multiplayer_game_answer_selection.dart';
 
 class MultiplayerGameScoreboard extends StatelessWidget {
   final List<PlayerScore> scores;

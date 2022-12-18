@@ -67,7 +67,7 @@ class _MultiplayerGameViewState extends State<MultiplayerGameView> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 10)).then((value) => next());
+    Future.delayed(widget.game.timePerQuestion).then((value) => next());
     super.initState();
   }
 
@@ -78,7 +78,7 @@ class _MultiplayerGameViewState extends State<MultiplayerGameView> {
         question = nextQuestion;
         selectedAnswer = null;
       });
-      Future.delayed(const Duration(seconds: 10)).then((value) => next());
+      Future.delayed(widget.game.timePerQuestion).then((value) => next());
     } else {
       switchScreen(
         context,

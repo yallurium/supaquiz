@@ -1,6 +1,14 @@
-class PlayerNameGenerator {
+class NicknameGenerator {
   static final _first = ['Trivia', 'Quiz'];
-  static final _second = ['King', 'Queen', 'Titan', 'Diva', 'Wizard', 'Buff', 'Pro'];
+  static final _second = [
+    'King',
+    'Queen',
+    'Titan',
+    'Diva',
+    'Wizard',
+    'Buff',
+    'Pro'
+  ];
 
   static String get generate {
     _first.shuffle();

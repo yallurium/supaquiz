@@ -120,7 +120,7 @@ class GameService {
         .stream(primaryKey: ['id'])
         .eq('game_id', gameId)
         .map((event) {
-          return event.map((e) => e['player_name'] as String).toList();
+          return event.map((e) => e['nickname'] as String).toList();
         });
   }
 
@@ -133,10 +133,10 @@ class GameService {
   }
 
   Future<void> _joinGame(int gameId) async {
-    final playerName = _authService.playerName;
-    log('Adding $playerName as player in game $gameId');
+    final nickname = _authService.nickname;
+    log('Adding $nickname as player in game $gameId');
     await _supabaseClient.from('players').upsert(
-      {'player_name': playerName, 'game_id': gameId},
+      {'nickname': nickname, 'game_id': gameId},
       onConflict: 'game_id,user_id',
     );
   }

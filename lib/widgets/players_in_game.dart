@@ -19,8 +19,8 @@ class PlayersInGame extends StatelessWidget {
             const SizedBox(height: 12.0),
             Heading(text: 'Players'),
             const SizedBox(height: 12.0),
-            ...players.map((playerName) => Text(
-                  playerName,
+            ...players.map((nickname) => Text(
+                  nickname,
                   style: Theme.of(context).textTheme.bodySmall,
                 )),
             Text(

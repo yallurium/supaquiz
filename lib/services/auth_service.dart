@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supaquiz/services/player_name_generator.dart';
+import 'package:supaquiz/services/nickname_generator.dart';
 import 'package:uuid/uuid.dart';
 
 class AuthService {
-  static const _emailKey = 'email';
+  static const _emailKey = 'email1';
   static const _nicknameKey = 'nickname';
   static const _defaultPassword = '82eb32f2a3ef';
 
@@ -38,8 +38,8 @@ class AuthService {
 
   String get userId => _auth.currentUser!.id;
 
-  String get playerName =>
-      _preferences.getString(_nicknameKey) ?? PlayerNameGenerator.generate;
+  String get nickname =>
+      _preferences.getString(_nicknameKey) ?? NicknameGenerator.generate;
 
   static String get _randomEmail {
     return '${Uuid().v4().toString()}@dartling.dev';
