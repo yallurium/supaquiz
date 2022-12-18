@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supaquiz/services/player_name_generator.dart';
 import 'package:uuid/uuid.dart';
 
 class AuthService {
-  static const _userIdKey = 'user_id';
-  static const _playerNameKey = 'player_name';
+  static const _emailKey = 'email';
+  static const _nicknameKey = 'nickname';
   static const _defaultPassword = '82eb32f2a3ef';
 
   final GoTrueClient _auth;
@@ -15,25 +17,31 @@ class AuthService {
 
   /// Creates an "anonymous" session by generating a random email
   /// and using the same password.
-  /// User ID is persisted to avoid creating a new user every time
+  /// Email persisted to avoid creating a new user every time
   /// the app is restarted.
-  Future<AuthResponse> signIn(String playerName) async {
-    _preferences.setString(_playerNameKey, playerName);
-    if (_preferences.containsKey(_userIdKey)) {
-      final userId = _preferences.getString(_userIdKey)!;
+  Future<AuthResponse> signIn(String nickname) async {
+    _preferences.setString(_nicknameKey, nickname);
+    if (_preferences.containsKey(_emailKey)) {
       return _auth.signInWithPassword(
-          email: _email(userId), password: _defaultPassword);
+        email: _preferences.getString(_emailKey)!,
+        password: _defaultPassword,
+      );
     } else {
-      final userId = Uuid().v4().toString();
-      _preferences.setString(_userIdKey, userId);
-      return _auth.signUp(email: _email(userId), password: _defaultPassword);
+      final email = _randomEmail;
+      final response =
+          await _auth.signUp(email: email, password: _defaultPassword);
+      log('User signed up with random email $email');
+      _preferences.setString(_emailKey, email);
+      return response;
     }
   }
 
-  String get playerName =>
-      _preferences.getString(_playerNameKey) ?? PlayerNameGenerator.generate;
+  String get userId => _auth.currentUser!.id;
 
-  static String _email(String userId) {
-    return '$userId@dartling.dev';
+  String get playerName =>
+      _preferences.getString(_nicknameKey) ?? PlayerNameGenerator.generate;
+
+  static String get _randomEmail {
+    return '${Uuid().v4().toString()}@dartling.dev';
   }
 }

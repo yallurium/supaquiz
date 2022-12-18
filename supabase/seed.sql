@@ -41,6 +41,24 @@ create table answers (
   answer_time timestamptz default now()
 );
 
+create or replace function calculate_scores(game_id_param int) returns table (
+  user_id uuid, nickname text, score int
+) as $$ begin return query
+select
+  players.user_id :: uuid as user_id,
+  min(players.player_name):: text as nickname,
+  (count(answers.id) * 100):: int as score
+from
+  players
+  join questions on questions.game_id = players.game_id
+  left join answers on answers.question_id = questions.id
+  and answers.user_id = players.user_id and questions.correct_answer = answers.answer
+where players.game_id = game_id_param
+group by players.user_id
+order by score desc;
+end;
+$$ language plpgsql;
+
 -- TODO RLS
 -- TODO Delete game/players/questions/answers on completed game
 -- TODO Player stats

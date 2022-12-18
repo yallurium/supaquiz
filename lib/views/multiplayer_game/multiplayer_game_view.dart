@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:supaquiz/models/game_question.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
@@ -5,6 +7,7 @@ import 'package:supaquiz/navigation.dart';
 import 'package:supaquiz/services.dart';
 import 'package:supaquiz/views/multiplayer_game/multiplayer_game_answer_selection.dart';
 import 'package:supaquiz/views/multiplayer_game/multiplayer_game_scoreboard.dart';
+import 'package:supaquiz/widgets/screen_loader.dart';
 
 class MultiplayerGameManager {
   final Iterator<GameQuestion> _iterator;
@@ -51,6 +54,7 @@ class _MultiplayerGameViewState extends State<MultiplayerGameView> {
         setState(() {
           selectedAnswer = answer;
         });
+        log('Answered "$answer"');
         await Services.of(context)
             .gameService
             .answerQuestion(widget.game.id, question!.id, answer);
@@ -70,7 +74,16 @@ class _MultiplayerGameViewState extends State<MultiplayerGameView> {
         });
       } else {
         switchScreen(
-            context, MultiplayerGameScoreboard(gameId: widget.game.id));
+          context,
+          ScreenLoader(
+            loadingText: 'Calculating...',
+            future: Services.of(context).gameService.getScores(widget.game.id),
+            builder: (context, scores) => MultiplayerGameScoreboard(
+              scores: scores,
+              userId: Services.of(context).authService.userId,
+            ),
+          ),
+        );
       }
     });
   }

@@ -3,10 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 class ScreenLoader<T> extends StatelessWidget {
+  final String loadingText;
+
   const ScreenLoader({
     Key? key,
     required this.future,
     required this.builder,
+    this.loadingText = 'Loading...',
   }) : super(key: key);
 
   final Future<T> future;
@@ -33,7 +36,7 @@ class ScreenLoader<T> extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text('Loading...'),
+                    child: Text(loadingText),
                   )
                 ],
               );

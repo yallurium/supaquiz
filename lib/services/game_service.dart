@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supaquiz/models/game_question.dart';
 import 'package:supaquiz/models/game_status.dart';
 import 'package:supaquiz/models/multiplayer_game.dart';
+import 'package:supaquiz/models/player_score.dart';
 import 'package:supaquiz/models/solo_game.dart';
 import 'package:supaquiz/models/trivia_question.dart';
 import 'package:supaquiz/repositories/trivia_repository.dart';
@@ -16,6 +17,7 @@ class GameService {
   final SupabaseClient _supabaseClient;
   final HashIds _hashIds;
 
+  // TODO Remove characters that look similar in current font, and replace when calculating.
   GameService(this._authService, this._triviaRepository, this._supabaseClient)
       : _hashIds = HashIds(minHashLength: 4);
 
@@ -121,6 +123,14 @@ class GameService {
         .map((event) {
           return event.map((e) => e['player_name'] as String).toList();
         });
+  }
+
+  Future<List<PlayerScore>> getScores(int gameId) async {
+    await Future.delayed(const Duration(seconds: 2));
+    final scores = await _supabaseClient.rpc('calculate_scores',
+        params: {'game_id_param': gameId}).select<List<Map<String, dynamic>>>();
+    log('Player scores for game $gameId: ${scores.join(', ')}');
+    return scores.map(PlayerScore.fromJson).toList();
   }
 
   Future<void> _joinGame(int gameId) async {

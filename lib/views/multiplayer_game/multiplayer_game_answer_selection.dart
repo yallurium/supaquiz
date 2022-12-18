@@ -3,6 +3,7 @@ import 'package:supaquiz/models/game_question.dart';
 import 'package:supaquiz/theme.dart';
 import 'package:supaquiz/widgets/app_button.dart';
 
+// TODO Implement time-out, only proceed to next question after set time.
 class MultiplayerGameAnswerSelection extends StatelessWidget {
   static const red = Color(0xFFCE5152);
 
