@@ -29,5 +29,7 @@ This project uses Supabase to achieve multiplayer and real-time functionality.
 ## Development
 Supaquiz is a [Flutter](https://flutter.dev) app and supports Web, Android and iOS (desktop platforms should also be easy to support). If you have the Flutter SDK installed, you can run the app with `flutter run` or build the app with `flutter build`.
 
+**IMPORTANT**: Because of the "anonymous" login mechanism, email confirmations should be disabled. Otherwise the logged in user will not be able to read/write to the database and the game will not work.
+
 ## Deployment
 A GitHub Action is set up to build the project for the web platform when changes are pushed to the `main` branch, and publish the updated web app on [GitHub Pages](https://yallurium.github.io/supaquiz).
